@@ -1,0 +1,396 @@
+/* =========================================
+   1. CSS VARIABLES & GLOBAL RESET
+   Requirement: Minimal 5 CSS Variables & box-sizing global
+   ========================================= */
+:root {
+  --color-primary: #4f46e5;       /* Indigo */
+  --color-secondary: #818cf8;     /* Light Indigo */
+  --color-bg: #f9fafb;            /* Light Gray Background */
+  --color-text: #1f2937;          /* Dark Gray Text */
+  --color-card-bg: #ffffff;       /* White Card Background */
+  --spacing-unit: 1rem;           /* Consistent spacing */
+  --border-radius: 0.75rem;       /* Consistent rounded corners */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Global box-sizing reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* =========================================
+   2. POIN BONUS: DARK MODE IMPLEMENTATION
+   Requirement: @media (prefers-color-scheme: dark)
+   ========================================= */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #111827;          /* Dark Background */
+    --color-text: #f3f4f6;        /* Light Text */
+    --color-card-bg: #1f2937;     /* Dark Card Background */
+    --color-primary: #6366f1;     /* Brighter Indigo for dark mode */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* =========================================
+   3. MAIN LAYOUT STRUCTURE
+   Requirement: Menggunakan CSS Grid untuk struktur utama
+   ========================================= */
+.portfolio-layout {
+  display: grid;
+  grid-template-columns: 1fr; /* Default mobile: 1 kolom */
+  gap: var(--spacing-unit);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-unit);
+}
+
+/* Tablet & Desktop: Sidebar (aside) + Main Content */
+@media (min-width: 768px) {
+  .portfolio-layout {
+    grid-template-columns: 280px 1fr; /* 2 kolom: Aside | Main */
+    gap: 2rem;
+    padding: 2rem;
+  }
+}
+
+/* =========================================
+   4. SEMANTIC ELEMENTS STYLING (BEM Convention)
+   Requirement: HTML5 Semantik (<header>, <nav>, <aside>, <main>)
+   ========================================= */
+
+/* --- HEADER & NAV (Flexbox Component 1) --- */
+.site-header {
+  grid-column: 1 / -1; /* Memenuhi lebar penuh grid */
+  background-color: var(--color-card-bg);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+  
+  /* Flexbox untuk menyusun logo dan navigasi */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .site-header {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+  }
+}
+
+.site-header__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.site-header__subtitle {
+  font-size: 0.95rem;
+  color: var(--color-text);
+  opacity: 0.8;
+}
+
+.main-nav {
+  /* Flexbox Component 2: Navigasi responsif */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.main-nav__link {
+  text-decoration: none;
+  color: var(--color-text);
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.main-nav__link:hover {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+/* --- ASIDE (Sidebar Profil) --- */
+.profile-aside {
+  background-color: var(--color-card-bg);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+  height: fit-content;
+  position: sticky;
+  top: 1rem; /* Sticky saat di-scroll (desktop) */
+}
+
+.profile-aside__name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--color-primary);
+}
+
+.profile-aside__info {
+  list-style: none;
+  font-size: 0.9rem;
+}
+
+.profile-aside__info li {
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+}
+
+.profile-aside__info strong {
+  display: block;
+  color: var(--color-text);
+  opacity: 0.7;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* --- MAIN CONTENT --- */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.content-section {
+  background-color: var(--color-card-bg);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.content-section__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--color-secondary);
+  display: inline-block;
+}
+
+/* --- SKILLS GRID (Nested Grid) --- */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.skill-card {
+  background-color: var(--color-bg);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  border-left: 4px solid var(--color-primary);
+}
+
+.skill-card__name {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.skill-card__desc {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* --- CONTACT FORM (Flexbox Component 3) --- */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.form-input {
+  padding: 0.75rem;
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  border-radius: var(--border-radius);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: inherit;
+  transition: border-color 0.3s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.3s, background-color 0.3s;
+}
+
+.btn--primary {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.btn--primary:hover {
+  background-color: var(--color-secondary);
+}
+
+.btn--secondary {
+  background-color: transparent;
+  border: 1px solid var(--color-text);
+  color: var(--color-text);
+}
+
+.btn--secondary:hover {
+  background-color: var(--color-text);
+  color: var(--color-bg);
+}
+
+/* --- FOOTER --- */
+.site-footer {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 2rem 1rem;
+  background-color: var(--color-card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.profile-photo-container {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.profile-photo {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid var(--color-primary);
+    box-shadow: var(--shadow-md);
+    transition: transform 0.3s ease;
+}
+
+.profile-photo:hover {
+    transform: scale(1.05);
+}
+
+/* Responsive untuk mobile */
+@media (max-width: 768px) {
+    .profile-photo {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+/* =========================================
+   SOCIAL MEDIA COMPONENT (Flexbox)
+   ========================================= */
+.social-media {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(128, 128, 128, 0.2);
+}
+
+.social-media__title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--color-primary);
+}
+
+/* Flexbox untuk meratakan tombol sosmed */
+.social-media__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.social-media__link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(128, 128, 128, 0.2);
+}
+
+/* Efek Hover Umum */
+.social-media__link:hover {
+  color: #ffffff;
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Warna Spesifik saat Hover (Opsional, agar lebih keren) */
+.social-media__link--wa:hover {
+  background-color: #25D366; /* Warna Hijau WA */
+  border-color: #25D366;
+}
+
+.social-media__link--ig:hover {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); /* Warna Gradasi IG */
+  border-color: transparent;
+}
+
+.social-media__link--tiktok:hover {
+  background-color: #000000; /* Warna Hitam TikTok */
+  border-color: #000000;
+}
+
+/* Dark Mode Adjustment untuk Sosmed */
+@media (prefers-color-scheme: dark) {
+  .social-media__link {
+    background-color: #374151; /* Warna card dark mode */
+    border-color: #4b5563;
+  }
+}
